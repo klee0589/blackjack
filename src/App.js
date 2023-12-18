@@ -1,23 +1,26 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
+import BlackJackTable from './components/BlackJackTable';
 import './App.css';
 
+async function getNewDeck() {
+  const response = await fetch('https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1');
+  if (!response.ok) {
+    throw new Error(`Error: ${response}`)
+  }
+  const result = await response.json();
+  return result.deck_id
+}
+
 function App() {
+  const [deckId, setDeckId] = useState();
+
+  useEffect(() => {
+    getNewDeck().then(deck_id => setDeckId(deck_id))
+  }, [])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {deckId && <BlackJackTable deckId={deckId} />}
     </div>
   );
 }
