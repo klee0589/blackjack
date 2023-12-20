@@ -9,7 +9,6 @@ const BlackJackTable = ({ deckId }) => {
     let dealersValue = dealersCards.reduce((sum, card) => sum + grabCardValue(card.value), 0)
     const [gameIsOver, setGameIsOver] = useState(false);
     const [userStands, setUserStands] = useState(false);
-    const [dealerTurn, setDealerTurn] = useState(false);
 
     useEffect(() => {
         getInitialCards({ deckId, getTwoCards, setUserCards, setDealersCards });
@@ -22,23 +21,18 @@ const BlackJackTable = ({ deckId }) => {
     }, [playersValue, dealersValue])
 
     useEffect(() => {
-        function dealDealersCards() {
-            if (dealersValue < playersValue && !gameIsOver) {
-                getOneCardFromDeck({ deckId, getOneCards, setUserCards: setDealersCards });
-            } else {
-                setDealerTurn(false);
-            }
-        }
+        const fetchCard = async () => {
+            await getOneCardFromDeck({ deckId, getOneCards, setUserCards: setDealersCards });
+        };
 
-        if (userStands && !dealerTurn) {
-            setDealerTurn(true);
-            dealDealersCards();
-        } else if (dealerTurn && !gameIsOver) {
-            dealDealersCards();
+        if (userStands && dealersValue < 15 && dealersValue < playersValue) {
+
+            fetchCard();
         }
-    }, [userStands, gameIsOver, dealerTurn, dealersValue, playersValue, deckId]);
+    }, [userStands, deckId, gameIsOver, dealersCards, dealersValue, playersValue]);
 
     function reset() {
+        setUserStands(false)
         setGameIsOver(false)
         setUserCards([])
         setDealersCards([])
@@ -49,9 +43,12 @@ const BlackJackTable = ({ deckId }) => {
         <div className="BlackJackTable">
             <div className='Players'>
                 <h1>PLAYER {gameIsOver && playersValue <= 21 && 'Wins'}</h1>
-                <button disabled={gameIsOver} onClick={() => getOneCardFromDeck({ deckId, getOneCards, setUserCards })}>Hit</button>
+                <button disabled={gameIsOver || userStands} onClick={() => {
+
+                    getOneCardFromDeck({ deckId, getOneCards, setUserCards })
+                }}>Hit</button>
                 <button onClick={() => setUserStands(true)}>Stand</button>
-                <button onClick={() => reset()}>Reset</button>
+                <button disabled={!userStands && !gameIsOver} onClick={() => reset()}>Reset</button>
                 <h3>{playersValue}</h3>
                 {
                     userCards.map((card, index) => <img src={card?.image} alt={card.code} height={150} key={index} />)
