@@ -25,8 +25,7 @@ const BlackJackTable = ({ deckId }) => {
             await getOneCardFromDeck({ deckId, getOneCards, setUserCards: setDealersCards });
         };
 
-        if (userStands && dealersValue < 15 && dealersValue < playersValue) {
-
+        if (userStands && dealersValue <= 15 && dealersValue < playersValue) {
             fetchCard();
         }
     }, [userStands, deckId, gameIsOver, dealersCards, dealersValue, playersValue]);
@@ -43,16 +42,18 @@ const BlackJackTable = ({ deckId }) => {
         <div className="BlackJackTable">
             <div className='Players'>
                 <h1>PLAYER {gameIsOver && playersValue <= 21 && 'Wins'}</h1>
+                <h3>{playersValue}</h3>
+                {
+                    userCards.map((card, index) => <img src={card?.image} alt={card.code} height={150} key={index} />)
+                }
+            </div>
+            <div>
                 <button disabled={gameIsOver || userStands} onClick={() => {
 
                     getOneCardFromDeck({ deckId, getOneCards, setUserCards })
                 }}>Hit</button>
                 <button onClick={() => setUserStands(true)}>Stand</button>
                 <button disabled={!userStands && !gameIsOver} onClick={() => reset()}>Reset</button>
-                <h3>{playersValue}</h3>
-                {
-                    userCards.map((card, index) => <img src={card?.image} alt={card.code} height={150} key={index} />)
-                }
             </div>
             <div className='Players'>
                 <h1>DEALER {gameIsOver && dealersValue <= 21 && 'Wins'}</h1>

@@ -14,7 +14,7 @@ const cardValues = {
     'KING': 10,
 }
 
-export function grabCardValue(card, playerValue, dealerValue) {
+export function grabCardValue(card, playerValue) {
     if (!cardValues[card]) {
         if (playerValue + 11 <= 21) {
             return 11;
