@@ -12,7 +12,7 @@ async function getNewDeck() {
 }
 
 function App() {
-  const [deckId, setDeckId] = useState();
+  const [deckId, setDeckId] = useState(null);
 
   useEffect(() => {
     getNewDeck().then(deck_id => setDeckId(deck_id))
@@ -20,7 +20,7 @@ function App() {
 
   return (
     <div className="App">
-      {deckId && <BlackJackTable deckId={deckId} />}
+      <BlackJackTable deckId={deckId} />
     </div>
   );
 }
