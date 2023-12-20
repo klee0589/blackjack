@@ -4,6 +4,14 @@ module.exports = {
     entry: "./src/index.js",
     output: { path: path.resolve(__dirname, "dist") },
     mode: 'development',
+    resolve: {
+        extensions: [".ts", ".tsx", ".js"],
+        extensionAlias: {
+            ".js": [".js", ".ts"],
+            ".cjs": [".cjs", ".cts"],
+            ".mjs": [".mjs", ".mts"]
+        }
+    },
     module: {
         rules: [
             {
@@ -20,6 +28,7 @@ module.exports = {
                 test: /\.css$/i,
                 use: ["style-loader", "css-loader"],
             },
+            { test: /\.([cm]?ts|tsx)$/, loader: "ts-loader" }
         ],
     },
 };
