@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getOneCards, getTwoCards, backOfCardUrl } from '../utils/api';
 import { grabCardValue, getInitialCards, getOneCardFromDeck } from '../utils/helpers';
+import PlayingCards from './PlayingCards';
 
 const BlackJackTable = ({ deckId }) => {
     const [userCards, setUserCards] = useState([]);
@@ -9,6 +10,8 @@ const BlackJackTable = ({ deckId }) => {
     let dealersValue = dealersCards.reduce((sum, card) => sum + grabCardValue(card.value), 0)
     const [gameIsOver, setGameIsOver] = useState(false);
     const [userStands, setUserStands] = useState(false);
+    let dealerFirstCard = userStands || gameIsOver ? dealersCards[0]?.image : backOfCardUrl
+    let restOfDealersCards = dealersCards.filter((_, index) => index !== 0)
 
     useEffect(() => {
         getInitialCards({ deckId, getTwoCards, setUserCards, setDealersCards });
@@ -43,9 +46,9 @@ const BlackJackTable = ({ deckId }) => {
             <div className='Players'>
                 <h1>PLAYER {gameIsOver && playersValue <= 21 && 'Wins'}</h1>
                 <h3>{playersValue}</h3>
-                {
-                    userCards.map((card, index) => <img src={card?.image} alt={card.code} height={150} key={index} />)
-                }
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <PlayingCards userCards={userCards} />
+                </div>
             </div>
             <div>
                 <button disabled={gameIsOver || userStands} onClick={() => {
@@ -58,12 +61,14 @@ const BlackJackTable = ({ deckId }) => {
             <div className='Players'>
                 <h1>DEALER {gameIsOver && dealersValue <= 21 && 'Wins'}</h1>
                 <h3>{dealersValue}</h3>
-                {
-                    <img src={userStands || gameIsOver ? dealersCards[0]?.image : backOfCardUrl} alt={'dealers_first_card'} height={150} />
-                }
-                {
-                    dealersCards.map((card, index) => index !== 0 && <img src={card?.image} alt={card.code} height={150} />)
-                }
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    {
+                        <div style={{ marginRight: '2px' }}>
+                            <img src={dealerFirstCard} alt={'dealers_first_card'} height={150} />
+                        </div>
+                    }
+                    <PlayingCards userCards={restOfDealersCards} />
+                </div>
             </div>
         </div>
     );
