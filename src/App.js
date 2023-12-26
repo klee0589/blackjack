@@ -3,7 +3,7 @@ import BlackJackTable from './components/BlackJackTable';
 import './App.css';
 
 async function getNewDeck() {
-  const response = await fetch('https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1');
+  const response = await fetch('https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=8');
   if (!response.ok) {
     throw new Error(`Error: ${response}`)
   }
