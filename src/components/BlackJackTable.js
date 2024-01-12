@@ -29,45 +29,45 @@ const BlackJackTable = ({ deckId }) => {
     }
 
     useEffect(() => {
-        if (gameIsOver) {
-            // console.log('game over!!!')
-            if (playersValue > 21 || (dealersValue <= 21 && dealersValue > playersValue)) {
-                setMoney(prevAmount => prevAmount - (betAmount * 2));
-                setBetAmount(0);
-                setWinner("DEALER Wins!");
-            } else if (dealersValue > 21 || (playersValue <= 21 && playersValue > dealersValue)) {
-                setMoney(prevAmount => prevAmount + (betAmount * 2));
-                setBetAmount(0);
-                setWinner("PLAYER Wins!");
-            } else {
-                setWinner("It's a Tie!");
-            }
-        }
-    }, [gameIsOver, playersValue, dealersValue, betAmount])
-
-    useEffect(() => {
         if (deckId) {
             getInitialCards({ deckId, getTwoCards, setUserCards, setDealersCards });
         }
     }, [deckId])
 
-    useEffect(() => {
-        if (playersValue >= 21 || dealersValue >= 21) {
-            setGameIsOver(true)
-        }
-    }, [playersValue, dealersValue])
+    // useEffect(() => {
+    //     if (gameIsOver) {
+    //         // console.log('game over!!!')
+    //         if (playersValue > 21 || (dealersValue <= 21 && dealersValue > playersValue)) {
+    //             setMoney(prevAmount => prevAmount - (betAmount * 2));
+    //             setBetAmount(0);
+    //             setWinner("DEALER Wins!");
+    //         } else if (dealersValue > 21 || (playersValue <= 21 && playersValue > dealersValue)) {
+    //             setMoney(prevAmount => prevAmount + (betAmount * 2));
+    //             setBetAmount(0);
+    //             setWinner("PLAYER Wins!");
+    //         } else {
+    //             setWinner("It's a Tie!");
+    //         }
+    //     }
+    // }, [gameIsOver, playersValue, dealersValue, betAmount])
 
-    useEffect(() => {
-        if (deckId) {
-            const fetchCard = async () => {
-                await getOneCardFromDeck({ deckId, getOneCards, setUserCards: setDealersCards });
-            };
+    // useEffect(() => {
+    //     if (playersValue >= 21 || dealersValue >= 21) {
+    //         setGameIsOver(true)
+    //     }
+    // }, [playersValue, dealersValue, userStands])
 
-            if (userStands && (dealersValue <= 15 && dealersValue <= playersValue)) {
-                fetchCard();
-            }
-        }
-    }, [userStands, deckId, gameIsOver, dealersCards, dealersValue, playersValue]);
+    // useEffect(() => {
+    //     if (deckId) {
+    //         const fetchCard = async () => {
+    //             await getOneCardFromDeck({ deckId, getOneCards, setUserCards: setDealersCards });
+    //         };
+
+    //         if (userStands && (dealersValue <= 15 && dealersValue <= playersValue)) {
+    //             fetchCard();
+    //         }
+    //     }
+    // }, [userStands, deckId, gameIsOver, dealersCards, dealersValue, playersValue]);
 
     return (
         <div className="BlackJackTable">
