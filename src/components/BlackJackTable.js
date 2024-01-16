@@ -112,7 +112,7 @@ const BlackJackTable = ({ deckId }) => {
                 winner={winner} />
             <div className='Players'>
                 <h1>DEALER</h1>
-                <h3>{dealersValue}</h3>
+                <h3>{gameIsOver && dealersValue}</h3>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <div style={{ marginRight: '2px' }}>
                         <img src={dealerFirstCard} alt={'dealers_first_card'} height={150} />
