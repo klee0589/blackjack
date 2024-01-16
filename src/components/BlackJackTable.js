@@ -25,6 +25,7 @@ const BlackJackTable = ({ deckId }) => {
         setGameIsOver(false)
         setUserCards([])
         setDealersCards([])
+        setBetAmount(0)
         getInitialCards({ deckId, getTwoCards, setUserCards, setDealersCards });
     }
 
@@ -46,12 +47,27 @@ const BlackJackTable = ({ deckId }) => {
             }
         };
 
+        if (userStands) {
+            setGameIsOver(true, () => {
+                if (playersValue > 21 || (dealersValue <= 21 && dealersValue > playersValue)) {
+                    setMoney(prevAmount => prevAmount - (betAmount * 2));
+                    setBetAmount(0);
+                    setWinner("DEALER Wins!");
+                } else if (dealersValue > 21 || (playersValue <= 21 && playersValue > dealersValue)) {
+                    setMoney(prevAmount => prevAmount + (betAmount * 2));
+                    setBetAmount(0);
+                    setWinner("PLAYER Wins!");
+                } else {
+                    setWinner("It's a Tie!");
+                }
+            });
+        }
+
         if (gameIsOver) {
             const winnerResult = determineWinner(playersValue, dealersValue);
             setMoney(prevAmount => {
                 return prevAmount + winnerResult.moneyChange;
             });
-            setBetAmount(0);
             setWinner(winnerResult.message);
         }
     }, [gameIsOver, playersValue, dealersValue, betAmount]);
@@ -96,7 +112,7 @@ const BlackJackTable = ({ deckId }) => {
                 winner={winner} />
             <div className='Players'>
                 <h1>DEALER</h1>
-                <h3>{gameIsOver && dealersValue}</h3>
+                <h3>{dealersValue}</h3>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <div style={{ marginRight: '2px' }}>
                         <img src={dealerFirstCard} alt={'dealers_first_card'} height={150} />
