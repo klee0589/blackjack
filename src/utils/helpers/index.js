@@ -45,3 +45,13 @@ export async function getInitialCards({ deckId, getTwoCards, setUserCards, setDe
         console.error('Error fetching initial cards:', error);
     }
 };
+
+export const determineWinner = (playerValue, dealerValue, betAmount) => {
+    if (playerValue > 21 || (dealerValue <= 21 && dealerValue > playerValue)) {
+        return { message: "DEALER Wins!", moneyChange: -betAmount * 2 };
+    } else if (dealerValue > 21 || (playerValue <= 21 && playerValue > dealerValue)) {
+        return { message: "PLAYER Wins!", moneyChange: betAmount * 2 };
+    } else {
+        return { message: "It's a Tie!", moneyChange: 0 };
+    }
+};

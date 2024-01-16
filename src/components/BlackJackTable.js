@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getOneCards, getTwoCards, backOfCardUrl } from '../utils/api';
-import { grabCardValue, getInitialCards, getOneCardFromDeck } from '../utils/helpers';
+import { grabCardValue, getInitialCards, getOneCardFromDeck, determineWinner } from '../utils/helpers';
 import PlayingCards from './PlayingCards';
 import MidPanel from './BlackJack/MidPanel';
 
@@ -37,16 +37,6 @@ const BlackJackTable = ({ deckId }) => {
 
 
     useEffect(() => {
-        const determineWinner = (playerValue, dealerValue) => {
-            if (playerValue > 21 || (dealerValue <= 21 && dealerValue > playerValue)) {
-                return { message: "DEALER Wins!", moneyChange: -betAmount * 2 };
-            } else if (dealerValue > 21 || (playerValue <= 21 && playerValue > dealerValue)) {
-                return { message: "PLAYER Wins!", moneyChange: betAmount * 2 };
-            } else {
-                return { message: "It's a Tie!", moneyChange: 0 };
-            }
-        };
-
         if (userStands) {
             setGameIsOver(true, () => {
                 if (playersValue > 21 || (dealersValue <= 21 && dealersValue > playersValue)) {
@@ -64,7 +54,7 @@ const BlackJackTable = ({ deckId }) => {
         }
 
         if (gameIsOver) {
-            const winnerResult = determineWinner(playersValue, dealersValue);
+            const winnerResult = determineWinner(playersValue, dealersValue, betAmount);
             setMoney(prevAmount => {
                 return prevAmount + winnerResult.moneyChange;
             });
@@ -84,7 +74,7 @@ const BlackJackTable = ({ deckId }) => {
                 await getOneCardFromDeck({ deckId, getOneCards, setUserCards: setDealersCards });
             };
 
-            if (userStands && dealersValue < 17) {
+            if (userStands && dealersValue < 15) {
                 fetchCard();
             }
         }
