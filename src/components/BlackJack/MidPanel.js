@@ -28,7 +28,7 @@ const MidPanel = ({
                 <input type="text" id="bet" name="bet" onChange={(e) => setBetAmount(e.target.value)} />
             </form>
         </div>
-        {(gameIsOver || userStands) && (
+        {(gameIsOver || userStands) && winner && (
             <h1>
                 {winner}
             </h1>

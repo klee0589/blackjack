@@ -34,22 +34,27 @@ const BlackJackTable = ({ deckId }) => {
         }
     }, [deckId])
 
+
     useEffect(() => {
-        if (gameIsOver) {
-            // console.log('game over!!!')
-            if (playersValue > 21 || (dealersValue <= 21 && dealersValue > playersValue)) {
-                setMoney(prevAmount => prevAmount - (betAmount * 2));
-                setBetAmount(0);
-                setWinner("DEALER Wins!");
-            } else if (dealersValue > 21 || (playersValue <= 21 && playersValue > dealersValue)) {
-                setMoney(prevAmount => prevAmount + (betAmount * 2));
-                setBetAmount(0);
-                setWinner("PLAYER Wins!");
+        const determineWinner = (playerValue, dealerValue) => {
+            if (playerValue > 21 || (dealerValue <= 21 && dealerValue > playerValue)) {
+                return { message: "DEALER Wins!", moneyChange: -betAmount * 2 };
+            } else if (dealerValue > 21 || (playerValue <= 21 && playerValue > dealerValue)) {
+                return { message: "PLAYER Wins!", moneyChange: betAmount * 2 };
             } else {
-                setWinner("It's a Tie!");
+                return { message: "It's a Tie!", moneyChange: 0 };
             }
+        };
+
+        if (gameIsOver) {
+            const winnerResult = determineWinner(playersValue, dealersValue);
+            setMoney(prevAmount => {
+                return prevAmount + winnerResult.moneyChange;
+            });
+            setBetAmount(0);
+            setWinner(winnerResult.message);
         }
-    }, [gameIsOver, playersValue, dealersValue, betAmount])
+    }, [gameIsOver, playersValue, dealersValue, betAmount]);
 
     useEffect(() => {
         if (playersValue >= 21 || dealersValue >= 21) {
@@ -63,7 +68,7 @@ const BlackJackTable = ({ deckId }) => {
                 await getOneCardFromDeck({ deckId, getOneCards, setUserCards: setDealersCards });
             };
 
-            if (userStands && (dealersValue <= 15 && dealersValue <= playersValue)) {
+            if (userStands && dealersValue < 17) {
                 fetchCard();
             }
         }
