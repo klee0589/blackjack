@@ -29,7 +29,7 @@ const MidPanel = ({
             </form>
         </div>
         {(gameIsOver || userStands) && winner && (
-            <h1>
+            <h1 style={{ color: 'green', background: 'white', borderRadius: '10px' }}>
                 {winner}
             </h1>
         )}
