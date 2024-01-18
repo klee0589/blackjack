@@ -19,7 +19,6 @@ const MidPanel = ({
 }) => {
     return <div className="mid-panel">
         <button disabled={gameIsOver || userStands} onClick={() => {
-            console.log(userCards)
             if (userCards.length >= 2) {
                 getOneCardFromDeck({ deckId, getOneCards, setUserCards })
             } else {
