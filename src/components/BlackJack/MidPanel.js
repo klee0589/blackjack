@@ -20,14 +20,14 @@ const MidPanel = ({
     return <div className="mid-panel">
         <button disabled={gameIsOver || userStands} onClick={() => {
             console.log(userCards)
-            if (userCards?.length >= 2) {
+            if (userCards.length >= 2) {
                 getOneCardFromDeck({ deckId, getOneCards, setUserCards })
             } else {
                 getInitialCards({ deckId, getTwoCards, setUserCards, setDealersCards });
             }
             setGameStart(gameStart => !gameStart)
-        }}>Hit</button>
-        <button disabled={gameIsOver || userStands} onClick={() => setUserStands(true)}>Stand</button>
+        }}>{userCards.length >= 2 ? "Hit" : "Start"}</button>
+        <button disabled={(userStands || gameIsOver) || (userCards.length < 2)} onClick={() => setUserStands(true)}>Stand</button>
         <button disabled={!userStands && !gameIsOver} onClick={() => {
             reset()
             setGameStart(gameStart => !gameStart)
@@ -38,15 +38,15 @@ const MidPanel = ({
         <div>
             <form>
                 <label form="bet">Bet:</label>
-                <button disabled={(userStands || gameIsOver) || ((money - betAmount) < 5)} onClick={(e) => {
+                <button disabled={(userCards.length >= 2) || ((money - betAmount) < 5)} onClick={(e) => {
                     e.preventDefault()
                     setBetAmount(betAmount => betAmount + 5)
                 }}>$5</button>
-                <button disabled={(userStands || gameIsOver) || ((money - betAmount) < 25)} onClick={(e) => {
+                <button disabled={(userCards.length >= 2) || ((money - betAmount) < 25)} onClick={(e) => {
                     e.preventDefault()
                     setBetAmount(betAmount => betAmount + 25)
                 }}>$25</button>
-                <button disabled={(userStands || gameIsOver) || ((money - betAmount) < 100)} onClick={(e) => {
+                <button disabled={(userCards.length >= 2) || ((money - betAmount) < 100)} onClick={(e) => {
                     e.preventDefault()
                     setBetAmount(betAmount => betAmount + 100)
                 }}>$100</button>

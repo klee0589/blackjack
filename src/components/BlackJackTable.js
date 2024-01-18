@@ -29,16 +29,6 @@ const BlackJackTable = ({ deckId }) => {
         setBetAmount(0)
     }
 
-    // const nextHand = () => {
-    //     getInitialCards({ deckId, getTwoCards, setUserCards, setDealersCards });
-    // }
-
-    // useEffect(() => {
-    //     if (deckId) {
-    //         getInitialCards({ deckId, getTwoCards, setUserCards, setDealersCards });
-    //     }
-    // }, [deckId])
-
     useEffect(() => {
         if (playersValue >= 21 || dealersValue >= 21) {
             setGameIsOver(true)
@@ -47,11 +37,11 @@ const BlackJackTable = ({ deckId }) => {
         if (userStands) {
             setGameIsOver(true);
             if (playersValue > 21 || (dealersValue <= 21 && dealersValue > playersValue)) {
-                setMoney(prevAmount => prevAmount - (betAmount * 2));
+                setMoney(prevAmount => prevAmount - betAmount);
                 setBetAmount(0);
                 setWinner("DEALER Wins!");
             } else if (dealersValue > 21 || (playersValue <= 21 && playersValue > dealersValue)) {
-                setMoney(prevAmount => prevAmount + (betAmount * 2));
+                setMoney(prevAmount => prevAmount + betAmount);
                 setBetAmount(0);
                 setWinner("PLAYER Wins!");
             } else {
