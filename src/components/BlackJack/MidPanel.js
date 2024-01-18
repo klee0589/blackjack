@@ -1,4 +1,5 @@
-import { getOneCardFromDeck } from '../../utils/helpers';
+import { getOneCardFromDeck, getInitialCards } from '../../utils/helpers';
+import { getTwoCards } from '../../utils/api';
 
 const MidPanel = ({
     gameIsOver,
@@ -12,19 +13,25 @@ const MidPanel = ({
     betAmount,
     setBetAmount,
     winner,
-    gameStart,
-    setGameStart
+    setGameStart,
+    userCards,
+    setDealersCards
 }) => {
     return <div className="mid-panel">
         <button disabled={gameIsOver || userStands} onClick={() => {
-            getOneCardFromDeck({ deckId, getOneCards, setUserCards })
+            console.log(userCards)
+            if (userCards?.length >= 2) {
+                getOneCardFromDeck({ deckId, getOneCards, setUserCards })
+            } else {
+                getInitialCards({ deckId, getTwoCards, setUserCards, setDealersCards });
+            }
             setGameStart(gameStart => !gameStart)
         }}>Hit</button>
         <button disabled={gameIsOver || userStands} onClick={() => setUserStands(true)}>Stand</button>
         <button disabled={!userStands && !gameIsOver} onClick={() => {
             reset()
             setGameStart(gameStart => !gameStart)
-        }}>Deal</button>
+        }}>Reset</button>
         <div>Bank: ${money}</div>
         <div>Bet Amount: ${betAmount}</div>
         <div>Win Amount: ${betAmount * 2}</div>

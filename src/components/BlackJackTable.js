@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getOneCards, getTwoCards, backOfCardUrl } from '../utils/api';
-import { grabCardValue, getInitialCards, getOneCardFromDeck, determineWinner } from '../utils/helpers';
+import { getOneCards, backOfCardUrl } from '../utils/api';
+import { grabCardValue, getOneCardFromDeck, determineWinner } from '../utils/helpers';
 import PlayingCards from './PlayingCards';
 import MidPanel from './BlackJack/MidPanel';
 
@@ -27,17 +27,23 @@ const BlackJackTable = ({ deckId }) => {
         setUserCards([])
         setDealersCards([])
         setBetAmount(0)
-        getInitialCards({ deckId, getTwoCards, setUserCards, setDealersCards });
     }
 
+    // const nextHand = () => {
+    //     getInitialCards({ deckId, getTwoCards, setUserCards, setDealersCards });
+    // }
+
+    // useEffect(() => {
+    //     if (deckId) {
+    //         getInitialCards({ deckId, getTwoCards, setUserCards, setDealersCards });
+    //     }
+    // }, [deckId])
+
     useEffect(() => {
-        if (deckId) {
-            getInitialCards({ deckId, getTwoCards, setUserCards, setDealersCards });
+        if (playersValue >= 21 || dealersValue >= 21) {
+            setGameIsOver(true)
         }
-    }, [deckId])
 
-
-    useEffect(() => {
         if (userStands) {
             setGameIsOver(true);
             if (playersValue > 21 || (dealersValue <= 21 && dealersValue > playersValue)) {
@@ -62,12 +68,6 @@ const BlackJackTable = ({ deckId }) => {
             setGameStart(gameStart => !gameStart)
         }
     }, [gameIsOver, playersValue, dealersValue, betAmount, userStands]);
-
-    useEffect(() => {
-        if (playersValue >= 21 || dealersValue >= 21) {
-            setGameIsOver(true)
-        }
-    }, [playersValue, dealersValue, userStands])
 
     useEffect(() => {
         if (deckId) {
@@ -95,6 +95,7 @@ const BlackJackTable = ({ deckId }) => {
                 deckId={deckId}
                 getOneCards={getOneCards}
                 setUserCards={setUserCards}
+                userCards={userCards}
                 setUserStands={setUserStands}
                 reset={reset}
                 money={money}
@@ -102,16 +103,20 @@ const BlackJackTable = ({ deckId }) => {
                 betAmount={betAmount}
                 gameStart={gameStart}
                 setGameStart={setGameStart}
+                setDealersCards={setDealersCards}
                 winner={winner} />
             <div className='Players'>
-                <h1>DEALER</h1>
-                <h3>{gameIsOver && dealersValue}</h3>
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <div style={{ marginRight: '2px' }}>
-                        <img src={dealerFirstCard} alt={'dealers_first_card'} height={150} />
-                    </div>
-                    <PlayingCards userCards={restOfDealersCards} />
-                </div>
+                {
+                    (userStands || gameIsOver) && <>
+                        <h1>DEALER</h1>
+                        <h3>{gameIsOver && dealersValue}</h3>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <div style={{ marginRight: '2px' }}>
+                                <img src={dealerFirstCard} alt={'dealers_first_card'} height={150} />
+                            </div>
+                            <PlayingCards userCards={restOfDealersCards} />
+                        </div></>
+                }
             </div>
         </div>
     );
