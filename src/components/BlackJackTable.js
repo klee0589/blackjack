@@ -16,6 +16,7 @@ const BlackJackTable = ({ deckId }) => {
 
     const [gameIsOver, setGameIsOver] = useState(false);
     const [userStands, setUserStands] = useState(false);
+    const [gameStart, setGameStart] = useState(false);
 
     let dealerFirstCard = userStands || gameIsOver ? dealersCards[0]?.image : backOfCardUrl
     let restOfDealersCards = dealersCards.filter((_, index) => index !== 0)
@@ -38,19 +39,18 @@ const BlackJackTable = ({ deckId }) => {
 
     useEffect(() => {
         if (userStands) {
-            setGameIsOver(true, () => {
-                if (playersValue > 21 || (dealersValue <= 21 && dealersValue > playersValue)) {
-                    setMoney(prevAmount => prevAmount - (betAmount * 2));
-                    setBetAmount(0);
-                    setWinner("DEALER Wins!");
-                } else if (dealersValue > 21 || (playersValue <= 21 && playersValue > dealersValue)) {
-                    setMoney(prevAmount => prevAmount + (betAmount * 2));
-                    setBetAmount(0);
-                    setWinner("PLAYER Wins!");
-                } else {
-                    setWinner("It's a Tie!");
-                }
-            });
+            setGameIsOver(true);
+            if (playersValue > 21 || (dealersValue <= 21 && dealersValue > playersValue)) {
+                setMoney(prevAmount => prevAmount - (betAmount * 2));
+                setBetAmount(0);
+                setWinner("DEALER Wins!");
+            } else if (dealersValue > 21 || (playersValue <= 21 && playersValue > dealersValue)) {
+                setMoney(prevAmount => prevAmount + (betAmount * 2));
+                setBetAmount(0);
+                setWinner("PLAYER Wins!");
+            } else {
+                setWinner("It's a Tie!");
+            }
         }
 
         if (gameIsOver) {
@@ -59,8 +59,9 @@ const BlackJackTable = ({ deckId }) => {
                 return prevAmount + winnerResult.moneyChange;
             });
             setWinner(winnerResult.message);
+            setGameStart(gameStart => !gameStart)
         }
-    }, [gameIsOver, playersValue, dealersValue, betAmount]);
+    }, [gameIsOver, playersValue, dealersValue, betAmount, userStands]);
 
     useEffect(() => {
         if (playersValue >= 21 || dealersValue >= 21) {
@@ -99,6 +100,8 @@ const BlackJackTable = ({ deckId }) => {
                 money={money}
                 setBetAmount={setBetAmount}
                 betAmount={betAmount}
+                gameStart={gameStart}
+                setGameStart={setGameStart}
                 winner={winner} />
             <div className='Players'>
                 <h1>DEALER</h1>
