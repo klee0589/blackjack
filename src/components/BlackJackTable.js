@@ -34,27 +34,8 @@ const BlackJackTable = ({ deckId }) => {
             setGameIsOver(true)
         }
 
-        if (userStands) {
-            setGameIsOver(true);
-            if (playersValue > 21 || (dealersValue <= 21 && dealersValue > playersValue)) {
-                setMoney(prevAmount => prevAmount - betAmount);
-                setBetAmount(0);
-                setWinner("DEALER Wins!");
-            } else if (dealersValue > 21 || (playersValue <= 21 && playersValue > dealersValue)) {
-                setMoney(prevAmount => prevAmount + betAmount);
-                setBetAmount(0);
-                setWinner("PLAYER Wins!");
-            } else {
-                setWinner("It's a Tie!");
-            }
-        }
-
-        if (gameIsOver) {
-            const winnerResult = determineWinner(playersValue, dealersValue, betAmount);
-            setMoney(prevAmount => {
-                return prevAmount + winnerResult.moneyChange;
-            });
-            setWinner(winnerResult.message);
+        if (gameIsOver || userStands) {
+            determineWinner({ playersValue, dealersValue, betAmount, setMoney, setBetAmount, setWinner });
             setGameStart(gameStart => !gameStart)
         }
     }, [gameIsOver, playersValue, dealersValue, betAmount, userStands]);

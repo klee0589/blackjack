@@ -46,12 +46,16 @@ export async function getInitialCards({ deckId, getTwoCards, setUserCards, setDe
     }
 };
 
-export const determineWinner = (playerValue, dealerValue, betAmount) => {
-    if (playerValue > 21 || (dealerValue <= 21 && dealerValue > playerValue)) {
-        return { message: "DEALER Wins!", moneyChange: -betAmount * 2 };
-    } else if (dealerValue > 21 || (playerValue <= 21 && playerValue > dealerValue)) {
-        return { message: "PLAYER Wins!", moneyChange: betAmount * 2 };
+export const determineWinner = ({ playersValue, dealersValue, betAmount, setMoney, setBetAmount, setWinner }) => {
+    if (playersValue > 21 || (dealersValue <= 21 && dealersValue > playersValue)) {
+        setMoney(prevAmount => prevAmount - betAmount);
+        setBetAmount(0);
+        setWinner("DEALER Wins!");
+    } else if (dealersValue > 21 || (playersValue <= 21 && playersValue > dealersValue)) {
+        setMoney(prevAmount => prevAmount + betAmount);
+        setBetAmount(0);
+        setWinner("PLAYER Wins!");
     } else {
-        return { message: "It's a Tie!", moneyChange: 0 };
+        setWinner("It's a Tie!");
     }
 };
