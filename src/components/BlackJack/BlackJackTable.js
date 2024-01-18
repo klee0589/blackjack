@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getOneCards, backOfCardUrl } from '../../utils/api';
 import { grabCardValue, getOneCardFromDeck, determineWinner } from '../../utils/helpers';
 import PlayingCards from './PlayingCards';
-import MidPanel from './MidPanel';
+import BetBox from './BetBox';
 
 const BlackJackTable = ({ deckId }) => {
     const [userCards, setUserCards] = useState([]);
@@ -11,8 +11,9 @@ const BlackJackTable = ({ deckId }) => {
     const [betAmount, setBetAmount] = useState(0);
     const [winner, setWinner] = useState('');
 
-    let playersValue = userCards.reduce((sum, card) => sum + grabCardValue(card.value), 0)
-    let dealersValue = dealersCards.reduce((sum, card) => sum + grabCardValue(card.value), 0)
+    let playersValue = grabCardValue({ cards: userCards })
+
+    let dealersValue = grabCardValue({ cards: dealersCards })
 
     const [gameIsOver, setGameIsOver] = useState(false);
     const [userStands, setUserStands] = useState(false);
@@ -61,7 +62,7 @@ const BlackJackTable = ({ deckId }) => {
                     <PlayingCards userCards={userCards} />
                 </div>
             </div>
-            <MidPanel gameIsOver={gameIsOver}
+            <BetBox gameIsOver={gameIsOver}
                 userStands={userStands}
                 deckId={deckId}
                 getOneCards={getOneCards}

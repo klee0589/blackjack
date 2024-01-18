@@ -14,15 +14,27 @@ const cardValues = {
     'KING': 10,
 }
 
-export function grabCardValue(card, playerValue) {
-    if (!cardValues[card]) {
-        if (playerValue + 11 <= 21) {
-            return 11;
+export function grabCardValue({ cards }) {
+    let totalValue = 0;
+    let numberOfAces = 0;
+
+    for (const card of cards) {
+        if (cardValues[card.value]) {
+            totalValue += cardValues[card.value];
         } else {
-            return 1;
+            numberOfAces++;
         }
     }
-    return cardValues[card];
+
+    for (let i = 0; i < numberOfAces; i++) {
+        if (totalValue + 11 <= 21) {
+            totalValue += 11;
+        } else {
+            totalValue += 1;
+        }
+    }
+
+    return totalValue;
 }
 
 export async function getOneCardFromDeck({ deckId, getOneCards, setUserCards }) {

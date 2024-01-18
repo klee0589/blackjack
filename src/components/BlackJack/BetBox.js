@@ -1,7 +1,7 @@
 import { getOneCardFromDeck, getInitialCards } from '../../utils/helpers';
 import { getTwoCards } from '../../utils/api';
 
-const MidPanel = ({
+const BetBox = ({
     gameIsOver,
     userStands,
     deckId,
@@ -59,4 +59,4 @@ const MidPanel = ({
     </div>
 }
 
-export default MidPanel;
+export default BetBox;
