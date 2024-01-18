@@ -12,7 +12,6 @@ const BlackJackTable = ({ deckId }) => {
     const [winner, setWinner] = useState('');
 
     let playersValue = grabCardValue({ cards: userCards })
-
     let dealersValue = grabCardValue({ cards: dealersCards })
 
     const [gameIsOver, setGameIsOver] = useState(false);
@@ -47,7 +46,7 @@ const BlackJackTable = ({ deckId }) => {
                 await getOneCardFromDeck({ deckId, getOneCards, setUserCards: setDealersCards });
             };
 
-            if (userStands && dealersValue < 15) {
+            if (userStands && dealersValue <= 15) {
                 fetchCard();
             }
         }
@@ -55,40 +54,44 @@ const BlackJackTable = ({ deckId }) => {
 
     return (
         <div className="BlackJackTable">
-            <div className='Players'>
-                <h1>PLAYER</h1>
-                <h3>{playersValue}</h3>
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <PlayingCards userCards={userCards} />
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '75%' }}>
+                <div className='Players'>
+                    <h1>PLAYER</h1>
+                    <h3>{playersValue}</h3>
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <PlayingCards userCards={userCards} />
+                    </div>
+                </div>
+                <div className='Players'>
+                    {
+                        (userStands || gameIsOver) && <>
+                            <h1>DEALER</h1>
+                            <h3>{dealersValue}</h3>
+                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                <div style={{ marginRight: '2px' }}>
+                                    <img src={dealerFirstCard} alt={'dealers_first_card'} height={150} />
+                                </div>
+                                <PlayingCards userCards={restOfDealersCards} />
+                            </div></>
+                    }
                 </div>
             </div>
-            <BetBox gameIsOver={gameIsOver}
-                userStands={userStands}
-                deckId={deckId}
-                getOneCards={getOneCards}
-                setUserCards={setUserCards}
-                userCards={userCards}
-                setUserStands={setUserStands}
-                reset={reset}
-                money={money}
-                setBetAmount={setBetAmount}
-                betAmount={betAmount}
-                gameStart={gameStart}
-                setGameStart={setGameStart}
-                setDealersCards={setDealersCards}
-                winner={winner} />
-            <div className='Players'>
-                {
-                    (userStands || gameIsOver) && <>
-                        <h1>DEALER</h1>
-                        <h3>{dealersValue}</h3>
-                        <div style={{ display: 'flex', justifyContent: 'center' }}>
-                            <div style={{ marginRight: '2px' }}>
-                                <img src={dealerFirstCard} alt={'dealers_first_card'} height={150} />
-                            </div>
-                            <PlayingCards userCards={restOfDealersCards} />
-                        </div></>
-                }
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '25%' }}>
+                <BetBox gameIsOver={gameIsOver}
+                    userStands={userStands}
+                    deckId={deckId}
+                    getOneCards={getOneCards}
+                    setUserCards={setUserCards}
+                    userCards={userCards}
+                    setUserStands={setUserStands}
+                    reset={reset}
+                    money={money}
+                    setBetAmount={setBetAmount}
+                    betAmount={betAmount}
+                    gameStart={gameStart}
+                    setGameStart={setGameStart}
+                    setDealersCards={setDealersCards}
+                    winner={winner} />
             </div>
         </div>
     );
