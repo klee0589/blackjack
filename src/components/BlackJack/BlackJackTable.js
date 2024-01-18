@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { getOneCards, backOfCardUrl } from '../utils/api';
-import { grabCardValue, getOneCardFromDeck, determineWinner } from '../utils/helpers';
+import { getOneCards, backOfCardUrl } from '../../utils/api';
+import { grabCardValue, getOneCardFromDeck, determineWinner } from '../../utils/helpers';
 import PlayingCards from './PlayingCards';
-import MidPanel from './BlackJack/MidPanel';
+import MidPanel from './MidPanel';
 
 const BlackJackTable = ({ deckId }) => {
     const [userCards, setUserCards] = useState([]);

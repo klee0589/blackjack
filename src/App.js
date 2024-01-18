@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import BlackJackTable from './components/BlackJackTable';
+import BlackJackTable from './components/BlackJack/BlackJackTable';
 import './App.css';
 
 async function getNewDeck() {
