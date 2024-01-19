@@ -106,7 +106,7 @@ const BlackJackTable = ({ deckId }) => {
                     }
                 </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '25%' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', width: '25%', marginTop: '45px' }}>
                 <BetBox gameIsOver={gameIsOver}
                     userStands={userStands}
                     deckId={deckId}
