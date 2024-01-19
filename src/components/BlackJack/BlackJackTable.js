@@ -52,6 +52,13 @@ const BlackJackTable = ({ deckId }) => {
         }
     }, [userStands, deckId, gameIsOver, dealersCards, dealersValue, playersValue]);
 
+    if (!money) {
+        return <div className='Overlay'><button className='Restart' onClick={() => {
+            reset()
+            setMoney(100)
+        }}>RESTART</button></div>
+    }
+
     return (
         <div className="BlackJackTable">
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '75%' }}>
