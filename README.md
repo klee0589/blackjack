@@ -22,3 +22,13 @@ Welcome to the Blackjack game, a simple implementation of the classic card game 
 
    ```bash
    git clone https://github.com/your-username/blackjack-game.git
+
+2. Install Dependencies:
+
+   ```bash
+   cd blackjack
+   yarn install
+
+3. Start the app:
+   ```bash
+   yarn start
