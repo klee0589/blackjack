@@ -44,3 +44,13 @@
   color: #FFF;
   font-size: 25px;
 }
+
+.BettingTips{
+  border: 1px solid #FFF;
+  margin: 10px;
+  padding: 5px;
+}
+
+.BettingButton{
+  height: 50px;
+}

@@ -20,15 +20,15 @@ const BetBox = ({
     return <div className="mid-panel">
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>Bet:</div>
-            <button disabled={(userCards.length >= 2) || ((money - betAmount) < 5)} onClick={(e) => {
+            <button className="BettingButton" disabled={(userCards.length >= 2) || ((money - betAmount) < 5)} onClick={(e) => {
                 e.preventDefault()
                 setBetAmount(betAmount => betAmount + 5)
             }}>$5</button>
-            <button disabled={(userCards.length >= 2) || ((money - betAmount) < 25)} onClick={(e) => {
+            <button className="BettingButton" disabled={(userCards.length >= 2) || ((money - betAmount) < 25)} onClick={(e) => {
                 e.preventDefault()
                 setBetAmount(betAmount => betAmount + 25)
             }}>$25</button>
-            <button disabled={(userCards.length >= 2) || ((money - betAmount) < 100)} onClick={(e) => {
+            <button className="BettingButton" disabled={(userCards.length >= 2) || ((money - betAmount) < 100)} onClick={(e) => {
                 e.preventDefault()
                 setBetAmount(betAmount => betAmount + 100)
             }}>$100</button>
@@ -37,7 +37,7 @@ const BetBox = ({
         <div>Bet Amount: ${betAmount}</div>
         <div>Win Amount: ${betAmount * 2}</div>
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <button disabled={gameIsOver || userStands} onClick={() => {
+            <button className="BettingButton" disabled={gameIsOver || userStands} onClick={() => {
                 if (userCards.length >= 2) {
                     getOneCardFromDeck({ deckId, getOneCards, setUserCards })
                 } else {
@@ -45,16 +45,29 @@ const BetBox = ({
                 }
                 setGameStart(gameStart => !gameStart)
             }}>{userCards.length >= 2 ? "Hit" : "Start"}</button>
-            <button disabled={(userStands || gameIsOver) || (userCards.length < 2)} onClick={() => setUserStands(true)}>Stand</button>
-            <button disabled={!userStands && !gameIsOver} onClick={() => {
+            <button className="BettingButton" disabled={(userStands || gameIsOver) || (userCards.length < 2)} onClick={() => setUserStands(true)}>Stand</button>
+            <button className="BettingButton" disabled={!userStands && !gameIsOver} onClick={() => {
                 reset()
                 setGameStart(gameStart => !gameStart)
             }}>Reset</button>
         </div>
         {(gameIsOver || userStands) && winner && (
-            <h1 style={{ color: 'green', background: 'white', borderRadius: '10px' }}>
+            <div style={{ color: winner === 'DEALER Wins!' ? 'red' : 'green', background: 'white', borderRadius: '10px', height: '200px', display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', marginTop: '10px', padding: '5px' }}>
                 {winner}
-            </h1>
+                {
+                    winner !== 'DEALER Wins!' &&
+                    <iframe
+                        title="Giphy"
+                        src="https://giphy.com/embed/12Eo7WogCAoj84"
+                        padding="0"
+                        width="200"
+                        height="200"
+                        frameBorder="0"
+                        className="giphy-embed"
+                        allowFullScreen
+                    ></iframe>
+                }
+            </div>
         )}
     </div>
 }

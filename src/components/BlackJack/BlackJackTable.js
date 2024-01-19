@@ -10,6 +10,8 @@ const BlackJackTable = ({ deckId }) => {
     const [money, setMoney] = useState(100);
     const [betAmount, setBetAmount] = useState(0);
     const [winner, setWinner] = useState('');
+    const [runningCount, setRunningCount] = useState(0);
+    const [trueCount, setTrueCount] = useState(0);
 
     let playersValue = grabCardValue({ cards: userCards })
     let dealersValue = grabCardValue({ cards: dealersCards })
@@ -21,6 +23,19 @@ const BlackJackTable = ({ deckId }) => {
     let dealerFirstCard = userStands || gameIsOver ? dealersCards[0]?.image : backOfCardUrl
     let restOfDealersCards = dealersCards.filter((_, index) => index !== 0)
 
+    const updateCount = (card) => {
+        const cardValue = Number(card.value);
+        const cardPoints = isNaN(cardValue) ? (card.value === 'ACE' ? -1 : -10) : cardValue;
+
+        setRunningCount(runningCount + cardPoints);
+
+        const decksRemaining = 8;
+        const cardsRemaining = decksRemaining * 52 - userCards.length - dealersCards.length;
+
+        const trueCountValue = Math.round(runningCount / (cardsRemaining / 52));
+        setTrueCount(trueCountValue);
+    };
+
     const reset = () => {
         setUserStands(false)
         setGameIsOver(false)
@@ -28,6 +43,12 @@ const BlackJackTable = ({ deckId }) => {
         setDealersCards([])
         setBetAmount(0)
     }
+
+    useEffect(() => {
+        userCards.map(userCard =>
+            updateCount(userCard)
+        )
+    }, [userCards])
 
     useEffect(() => {
         if (playersValue >= 21 || dealersValue >= 21) {
@@ -60,10 +81,15 @@ const BlackJackTable = ({ deckId }) => {
             }}>RESTART</button></div>}
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '75%' }}>
                 <div className='Players'>
-                    <h1>PLAYER</h1>
-                    <h3>{playersValue}</h3>
+                    <h3>Running Count: {runningCount}</h3>
+                    <h3>True Count: {trueCount}</h3>
+                    <div className='BettingTips'>Tip:
+                        <p>Positive True Count: Increase bets. A positive count indicates a higher likelihood of favorable cards (e.g., 10s and Aces), providing the player with an edge. Betting more in these situations maximizes potential winnings.</p>
+                        <p>Negative True Count: Decrease or maintain bets. A negative count suggests an excess of low-value cards, reducing the player's advantage. Betting less during such times helps minimize potential losses.</p></div>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <h3>PLAYER</h3>
                         <PlayingCards userCards={userCards} />
+                        <h3>{gameStart && playersValue}</h3>
                     </div>
                 </div>
                 <div className='Players'>
