@@ -21,8 +21,7 @@
 }
 
 .Overlay {
-    opacity: 1;
-    background-image: url("https://steamuserimages-a.akamaihd.net/ugc/1702907964261717226/AB9A223CF74E9E08D730872229577E2D4029E824/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true");
+    opacity: .5;
     background-color: #ccc;
     background-repeat: no-repeat;
     background-size: cover;
@@ -32,8 +31,8 @@
     top: 0;
     left: 0;
     z-index: 1000;
-    transition: opacity 0.2s ease-in; /* Standard syntax */
-    -webkit-transition: opacity 0.2s ease-in; /* WebKit prefix */
+    transition: opacity 0.2s ease-in;
+    -webkit-transition: opacity 0.2s ease-in;
     display: flex;
     justify-content: flex-end;
     flex-direction: column;

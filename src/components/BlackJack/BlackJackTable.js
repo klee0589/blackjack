@@ -53,7 +53,7 @@ const BlackJackTable = ({ deckId }) => {
     }, [userStands, deckId, gameIsOver, dealersCards, dealersValue, playersValue]);
 
     if (!money) {
-        return <div className='Overlay'><button className='Restart' onClick={() => {
+        return <div className='Overlay'><h1 style={{ color: 'red' }}>YOU BROKE</h1><button className='Restart' onClick={() => {
             reset()
             setMoney(100)
         }}>RESTART</button></div>
