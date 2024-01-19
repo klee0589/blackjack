@@ -52,15 +52,12 @@ const BlackJackTable = ({ deckId }) => {
         }
     }, [userStands, deckId, gameIsOver, dealersCards, dealersValue, playersValue]);
 
-    if (!money) {
-        return <div className='Overlay'><h1 style={{ color: 'red' }}>YOU BROKE</h1><button className='Restart' onClick={() => {
-            reset()
-            setMoney(100)
-        }}>RESTART</button></div>
-    }
-
     return (
         <div className="BlackJackTable">
+            {!money && <div className='Overlay'><h1 style={{ color: 'red' }}>YOU BROKE</h1><button className='Restart' onClick={() => {
+                reset()
+                setMoney(100)
+            }}>RESTART</button></div>}
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '75%' }}>
                 <div className='Players'>
                     <h1>PLAYER</h1>
