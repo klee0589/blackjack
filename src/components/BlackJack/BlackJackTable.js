@@ -1,4 +1,7 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/no-unescaped-entities */
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { getOneCards, backOfCardUrl } from '../../utils/api';
 import { grabCardValue, getOneCardFromDeck, determineWinner } from '../../utils/helpers';
 import PlayingCards from './PlayingCards';
@@ -23,19 +26,6 @@ const BlackJackTable = ({ deckId }) => {
     let dealerFirstCard = userStands || gameIsOver ? dealersCards[0]?.image : backOfCardUrl
     let restOfDealersCards = dealersCards.filter((_, index) => index !== 0)
 
-    const updateCount = (card) => {
-        const cardValue = Number(card.value);
-        const cardPoints = isNaN(cardValue) ? (card.value === 'ACE' ? -1 : -10) : cardValue;
-
-        setRunningCount(runningCount + cardPoints);
-
-        const decksRemaining = 8;
-        const cardsRemaining = decksRemaining * 52 - userCards.length - dealersCards.length;
-
-        const trueCountValue = Math.round(runningCount / (cardsRemaining / 52));
-        setTrueCount(trueCountValue);
-    };
-
     const reset = () => {
         setUserStands(false)
         setGameIsOver(false)
@@ -45,8 +35,18 @@ const BlackJackTable = ({ deckId }) => {
     }
 
     useEffect(() => {
-        userCards.map(userCard =>
-            updateCount(userCard)
+        userCards.map(userCard => {
+            const cardValue = Number(userCard.value);
+            const cardPoints = isNaN(cardValue) ? (userCard.value === 'ACE' ? -1 : -10) : cardValue;
+
+            setRunningCount(runningCount + cardPoints);
+
+            const decksRemaining = 8;
+            const cardsRemaining = decksRemaining * 52 - userCards.length - dealersCards.length;
+
+            const trueCountValue = Math.round(runningCount / (cardsRemaining / 52));
+            setTrueCount(trueCountValue);
+        }
         )
     }, [userCards])
 
@@ -79,13 +79,16 @@ const BlackJackTable = ({ deckId }) => {
                 reset()
                 setMoney(100)
             }}>RESTART</button></div>}
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '75%' }}>
+            <div className='table-left-column'>
                 <div className='Players'>
-                    <h3>Running Count: {runningCount}</h3>
-                    <h3>True Count: {trueCount}</h3>
-                    <div className='BettingTips'>Tip:
+                    <div className='BettingTips'>
                         <p>Positive True Count: Increase bets. A positive count indicates a higher likelihood of favorable cards (e.g., 10s and Aces), providing the player with an edge. Betting more in these situations maximizes potential winnings.</p>
-                        <p>Negative True Count: Decrease or maintain bets. A negative count suggests an excess of low-value cards, reducing the player's advantage. Betting less during such times helps minimize potential losses.</p></div>
+                        <p>Negative True Count: Decrease or maintain bets. A negative count suggests an excess of low-value cards, reducing the player's advantage. Betting less during such times helps minimize potential losses.</p>
+                        <div className='card-count-container'>
+                            <h3>Running Count: {runningCount}</h3>
+                            <h3>True Count: {trueCount}</h3>
+                        </div>
+                    </div>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
                         <h3>PLAYER</h3>
                         <PlayingCards userCards={userCards} />
@@ -106,7 +109,7 @@ const BlackJackTable = ({ deckId }) => {
                     }
                 </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', width: '25%', marginTop: '45px' }}>
+            <div className='table-right-column'>
                 <BetBox gameIsOver={gameIsOver}
                     userStands={userStands}
                     deckId={deckId}
@@ -126,5 +129,9 @@ const BlackJackTable = ({ deckId }) => {
         </div>
     );
 }
+
+BlackJackTable.propTypes = {
+    deckId: PropTypes.string.isRequired,
+};
 
 export default BlackJackTable;

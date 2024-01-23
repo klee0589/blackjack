@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BlackJackTable from './components/BlackJack/BlackJackTable';
 import './App.css';
 

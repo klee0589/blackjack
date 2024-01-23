@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { getOneCardFromDeck, getInitialCards } from '../../utils/helpers';
 import { getTwoCards } from '../../utils/api';
 
@@ -11,6 +12,10 @@ const CurrencyFormatter = ({ value }) => {
     }).format(value);
 
     return <span>{formattedCurrency}</span>;
+};
+
+CurrencyFormatter.propTypes = {
+    value: PropTypes.number.isRequired,
 };
 
 const BetBox = ({
@@ -31,7 +36,7 @@ const BetBox = ({
 }) => {
     return (
         <div className="mid-panel">
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div className='bet-button-container'>
                 {[5, 25, 100].map((amount, index) => (
                     <button
                         key={index}
@@ -79,7 +84,6 @@ const BetBox = ({
                         <iframe
                             title="Giphy"
                             src="https://giphy.com/embed/12Eo7WogCAoj84"
-                            padding="0"
                             width="200"
                             height="200"
                             frameBorder="0"
@@ -91,6 +95,23 @@ const BetBox = ({
             )}
         </div>
     );
+};
+
+BetBox.propTypes = {
+    gameIsOver: PropTypes.bool.isRequired,
+    userStands: PropTypes.bool.isRequired,
+    deckId: PropTypes.string.isRequired,
+    getOneCards: PropTypes.func.isRequired,
+    setUserCards: PropTypes.func.isRequired,
+    setUserStands: PropTypes.func.isRequired,
+    reset: PropTypes.func.isRequired,
+    money: PropTypes.number.isRequired,
+    betAmount: PropTypes.number.isRequired,
+    setBetAmount: PropTypes.func.isRequired,
+    winner: PropTypes.string,
+    setGameStart: PropTypes.func.isRequired,
+    userCards: PropTypes.array.isRequired,
+    setDealersCards: PropTypes.func.isRequired,
 };
 
 export default BetBox;

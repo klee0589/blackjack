@@ -16,6 +16,22 @@
   box-sizing: border-box;
 }
 
+.table-left-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 75%;
+  margin-top: 20px;
+}
+
+.table-right-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 25%;
+  margin-top: 40px;
+}
+
 .Players {
   border-radius: 20px;
 }
@@ -48,7 +64,7 @@
 .BettingTips {
   border: 1px solid #FFF;
   margin: 10px;
-  padding: 5px;
+  padding: 2px;
 }
 
 .BetControlPanel {
@@ -69,6 +85,12 @@
   height: 50px;
 }
 
+.bet-button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .winner-container {
   background: #FFF;
   border-radius: 10px;
@@ -79,4 +101,10 @@
   margin-top: 10px;
   padding: 5px;
   font-size: 25px;
+}
+
+.card-count-container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
 }
