@@ -91,8 +91,7 @@ const BlackJackTable = ({ deckId }) => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
                         <h3>PLAYER</h3>
-                        <PlayingCards userCards={userCards} />
-                        <h3>{gameStart && playersValue}</h3>
+                        <PlayingCards userCards={userCards} playersValue={playersValue} />
                     </div>
                 </div>
                 <div className='Players'>
