@@ -56,7 +56,7 @@ export async function getInitialCards({ deckId, getTwoCards, setUserCards, setDe
     } catch (error) {
         console.error('Error fetching initial cards:', error);
     }
-};
+}
 
 export const determineWinner = ({ playersValue, dealersValue, betAmount, setMoney, setBetAmount, setWinner }) => {
     if (playersValue > 21 || (dealersValue <= 21 && dealersValue > playersValue)) {
