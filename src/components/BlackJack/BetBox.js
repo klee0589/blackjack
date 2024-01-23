@@ -73,7 +73,7 @@ const BetBox = ({
                 }}>Reset</button>
             </div>
             {(gameIsOver || userStands) && winner && (
-                <div style={{ color: winner === 'DEALER Wins!' ? 'red' : 'green', background: 'white', borderRadius: '10px', height: '200px', display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', marginTop: '10px', padding: '5px', fontSize: '25px' }}>
+                <div className="winner-container" style={{ color: winner === 'DEALER Wins!' ? 'red' : 'green' }}>
                     {winner}
                     {winner !== 'DEALER Wins!' && (
                         <iframe
