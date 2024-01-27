@@ -5,7 +5,7 @@ const PlayingCards = ({ userCards, playersValue }) => {
     return (
         <div style={{ display: 'flex' }}>
             {userCards.map((card, index) => (
-                <div key={index} style={{ marginRight: '2px' }}>
+                <div key={index}>
                     <img src={card?.image} alt={card.code} height={150} />
                 </div>
             ))}
